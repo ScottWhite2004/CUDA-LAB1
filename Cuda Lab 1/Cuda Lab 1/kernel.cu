@@ -14,7 +14,7 @@ __global__ void addKernel(int *c, const int *a, const int *b)
 
 int main()
 {
-    const int arraySize = 10;
+    const int arraySize = 500;
     const int a[arraySize] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     const int b[arraySize] = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
     int c[arraySize] = { 0 };
@@ -80,7 +80,7 @@ int main()
     }
 
     cudaEventRecord(start, 0);
-    addKernel<<<1,10>>>(dev_c, dev_a, dev_b);
+    addKernel<<<100,100>>>(dev_c, dev_a, dev_b);
     cudaEventRecord(stop, 0);
 
     cudaEventSynchronize(stop);
