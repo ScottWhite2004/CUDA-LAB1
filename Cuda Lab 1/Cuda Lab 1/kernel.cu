@@ -9,6 +9,8 @@ cudaError_t addWithCuda(int *c, const int *a, const int *b, unsigned int size);
 __global__ void addKernel(int *c, const int *a, const int *b)
 {
     int i = threadIdx.x;
+    int j = threadIdx.y;
+    printf("threadIdx.x = %d threadIdx.y = %d \n", i,j);
     c[i] = a[i] + b[i];
 }
 
@@ -80,7 +82,7 @@ int main()
     }
 
     cudaEventRecord(start, 0);
-    addKernel<<<100,100>>>(dev_c, dev_a, dev_b);
+    addKernel<<<dim3(2,3), dim3(2, 2) >> >(dev_c, dev_a, dev_b);
     cudaEventRecord(stop, 0);
 
     cudaEventSynchronize(stop);
