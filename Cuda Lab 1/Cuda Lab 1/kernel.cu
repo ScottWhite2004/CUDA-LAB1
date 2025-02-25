@@ -8,9 +8,11 @@ cudaError_t addWithCuda(int *c, const int *a, const int *b, unsigned int size);
 
 __global__ void addKernel(int *c, const int *a, const int *b)
 {
-    int i = threadIdx.x;
-    int j = threadIdx.y;
-    printf("threadIdx.x = %d threadIdx.y = %d \n", i,j);
+    int threadsPerBlock = blockDim.x * blockDim.y;
+    int threadNumInBlock = threadIdx.x + blockDim.x * threadIdx.y;
+    int blockNumInGrid = blockIdx.x + gridDim.x * blockIdx.y;
+    int GlobalThreadNum = blockNumInGrid * threadsPerBlock + threadNumInBlock;
+    int i = GlobalThreadNum;
     c[i] = a[i] + b[i];
 }
 
